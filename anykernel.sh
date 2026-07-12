@@ -10,8 +10,7 @@ do.modules=0
 do.systemless=1
 do.cleanup=1
 do.cleanuponabort=0
-device.name1=sweet
-device.name2=sweetin
+device.name1=r9s
 supported.versions=11 - 16
 supported.patchlevels=
 supported.vendorpatchlevels=
@@ -25,7 +24,7 @@ set_perm_recursive 0 0 750 750 $RAMDISK/init* $RAMDISK/sbin;
 } # end attributes
 
 # boot shell variables
-BLOCK=/dev/block/bootdevice/by-name/boot;
+BLOCK=/dev/block/by-name/boot;
 IS_SLOT_DEVICE=0;
 RAMDISK_COMPRESSION=auto;
 PATCH_VBMETA_FLAG=auto;
@@ -34,7 +33,10 @@ PATCH_VBMETA_FLAG=auto;
 . tools/ak3-core.sh;
 
 # boot install
-dump_boot;
+split_boot; # use split_boot to skip ramdisk unpack, e.g. for devices with init_boot ramdisk
 
-write_boot;
+flash_boot; # use flash_boot to skip ramdisk repack, e.g. for devices with init_boot ramdisk
 ## end boot install
+
+flash_generic vendor_boot;
+## end flash
