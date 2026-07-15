@@ -10,9 +10,8 @@ do.modules=0
 do.systemless=1
 do.cleanup=1
 do.cleanuponabort=0
-device.name1=sweet
-device.name2=sweetin
-supported.versions=11 - 16
+device.name1=agate
+supported.versions=
 supported.patchlevels=
 supported.vendorpatchlevels=
 '; } # end properties
@@ -25,13 +24,18 @@ set_perm_recursive 0 0 750 750 $RAMDISK/init* $RAMDISK/sbin;
 } # end attributes
 
 # boot shell variables
-BLOCK=/dev/block/bootdevice/by-name/boot;
-IS_SLOT_DEVICE=0;
+BLOCK=/dev/block/by-name/boot;
+IS_SLOT_DEVICE=1;
 RAMDISK_COMPRESSION=auto;
 PATCH_VBMETA_FLAG=auto;
 
 # import functions/variables and setup patching - see for reference (DO NOT REMOVE)
 . tools/ak3-core.sh;
+
+# FUSE Passthrough
+ui_print " "
+ui_print "Enabling FUSE passthrough..."
+patch_prop /system/build.prop "persist.sys.fuse.passthrough.enable" "true"
 
 # boot install
 dump_boot;
